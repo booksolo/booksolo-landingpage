@@ -1,104 +1,95 @@
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fnexi-launch%2Ffinwise-landing-page)
+# BookSolo Landing Page
 
-# Finwise - Next.js + Tailwind Landing Page Template
+Next.js and Tailwind CSS landing page for BookSolo - AI chatbots for solo entrepreneurs.
 
-Finwise is a lightweight, easily configurable, and customizable **Next.js** and **Tailwind CSS** landing page template. It’s built to be adaptable, performant, and perfect for any product launch, portfolio, or promotional site.
+## Prerequisites
 
-Try out the demo here: [https://finwise-omega.vercel.app](https://finwise-omega.vercel.app).
+- Node.js 18 or later
+- npm 8 or later
 
-Please check out the documentation below to get started.
+## Build and Run
 
----
+1. Install dependencies:
+```bash
+npm install
+```
 
-## Features
+2. Run development server:
+```bash
+npm run dev
+```
 
-- **Next.js** app router with **TypeScript**
-- **Tailwind CSS** v3 for flexible styling customization
-- Smooth transitions powered by **Framer Motion**
-- Built-in **font optimization** with [next/font](https://nextjs.org/docs/app/api-reference/components/font)
-- Automatic **image optimization** via [next/image](https://nextjs.org/docs/app/building-your-application/optimizing/images)
-- Access to **31+ icon packs** via [React Icons](https://react-icons.github.io/react-icons/)
-- Near-perfect **Lighthouse score**
-- Modular, responsive, and **scalable components**
-- **Free lifetime updates**
+3. Open [http://localhost:3000](http://localhost:3000) in your browser
 
----
+## Build for Production
 
-## Sections
+```bash
+npm run build
+npm start
+```
 
-- Hero
-- Partners or Clients Logos
-- Features
-- Pricing
-- Testimonials
-- FAQ
-- Statistics
-- CTA
-- Footer
+## Deploy to AWS S3
 
----
+### Using Makefile (Recommended)
 
-## Getting Started
+The easiest way to build and deploy is using the Makefile:
 
-### Prerequisites
+```bash
+# Show all available commands
+make help
 
-Before starting, make sure you have the following installed:
+# Build and deploy in one command
+make deploy
 
-- **Node.js**: Version 18 or later
-- **npm**: Version 8 or later (bundled with Node.js)
-- **Code editor**: [VS Code](https://code.visualstudio.com/) is recommended.
+# Or step by step:
+make build    # Build the Next.js application
+make upload   # Upload to S3 (requires build first)
+```
 
-### Steps
+**Other useful Makefile commands:**
+- `make install` - Install npm dependencies
+- `make clean` - Clean build artifacts
+- `make check-aws` - Verify AWS credentials
+- `make check-bucket` - Verify S3 bucket exists
+- `make info` - Show build and deployment information
 
-1. **Install dependencies**: Run `npm install`
-2. **Run the development server**: `npm run dev`
-3. **View your project**: Open [localhost:3000](http://localhost:3000)
+### Manual Deployment
 
----
+Build the static site and deploy to S3 manually:
 
-## Customization
+```bash
+# Build the static site
+npm run build
 
-1. **Edit colors**: Update `globals.css` for primary, secondary, background, and accent colors.
-2. **Update site details**: Customize `siteDetails.ts` in `/src/data` to reflect your brand and site info.
-3. **Modify content**: Files in `/src/data` handle data for navigation, features, pricing, testimonials, and more.
-4. **Replace favicon**: Add your icon to `/src/app/favicon.ico`.
-5. **Add images**: Update `public/images` for Open Graph metadata (e.g., `og-image.jpg`, `twitter-image.jpg`).
+# Get the S3 bucket name (format: booksolo-landing-page-production-{account_id})
+BUCKET_NAME="booksolo-landing-page-production-$(aws sts get-caller-identity --profile booksolo --query Account --output text)"
 
----
+# Upload to S3 bucket using the booksolo AWS profile
+# For static export (if next.config.mjs has output: 'export'):
+aws s3 sync out/ s3://${BUCKET_NAME}/ --profile booksolo --delete
 
-## Deploying on Vercel
+# For standard Next.js build (SSG/SSR):
+# Note: This uploads the static assets. For full deployment, you may need to upload .next/ directory
+# or configure Next.js for static export
+aws s3 sync .next/static s3://${BUCKET_NAME}/_next/static --profile booksolo --delete
+```
 
-The fastest way to deploy Finwise is on [Vercel](https://vercel.com/). Simply click the "Deploy with Vercel" button at the top of this README, or check the [Next.js deployment docs](https://vercel.com/docs/deployments/deployment-methods) for other deployment options.
+**Alternative: One-liner with explicit bucket name**
 
----
+If you know your bucket name, you can use:
 
-## Contributing
+```bash
+# For static export:
+npm run build && aws s3 sync out/ s3://booksolo-landing-page-production-{YOUR_ACCOUNT_ID}/ --profile booksolo --delete
 
-Finwise is an open-source project, and we welcome contributions from the community! If you have ideas for new components, designs, layouts, or optimizations, please join us in making Finwise even better.
+# For standard build:
+npm run build && aws s3 sync .next/static s3://booksolo-landing-page-production-{YOUR_ACCOUNT_ID}/_next/static --profile booksolo --delete
+```
 
-### How to Contribute
+**Get your AWS Account ID:**
 
-1. **Fork the Repository**: Clone it locally.
-2. **Create a New Branch**: For example, `feature/new-section` or `fix/style-issue`.
-3. **Develop and Test**: Make sure your changes work and don't break existing functionality.
-4. **Submit a Pull Request**: Open a pull request with a clear description of your changes, and we'll review it.
+```bash
+aws sts get-caller-identity --profile booksolo --query Account --output text
+```
 
-### Ideas for Contributions
-
-- New component sections (team introductions, comparison table, case studies, etc.)
-- Additional page variants (e.g., agency, eCommerce, portfolio layouts)
-- Additional themes
-- Documentation updates, tutorials, or guides
-
----
-
-## Community and Support
-
-Join our community discussions on GitHub to share ideas, ask questions, or suggest improvements. Let’s build something amazing together!
-
-
---- 
-
-## License
-
-This project is open-source and available under the MIT License. Feel free to use, modify, and distribute it for personal or commercial projects.
+**Note:** For S3 static hosting, you typically want to use Next.js static export (`output: 'export'` in `next.config.mjs`). This generates an `out/` directory that can be directly uploaded to S3.
