@@ -73,13 +73,69 @@ upload: check-bucket ## Upload build artifacts to S3 (requires build first)
 		exit 1; \
 	fi
 	@if [ -d "out" ]; then \
-		echo "$(BLUE)Uploading static export (out/) to S3...$(NC)"; \
-		aws s3 sync out/ s3://$(BUCKET_NAME)/ --profile $(AWS_PROFILE) --delete --exclude "*.map"; \
+		echo "$(BLUE)Uploading static export (out/) to S3 with cache headers...$(NC)"; \
+		echo "$(BLUE)Uploading HTML files (short cache)...$(NC)"; \
+		aws s3 sync out/ s3://$(BUCKET_NAME)/ --profile $(AWS_PROFILE) --delete \
+			--exclude "*" \
+			--include "*.html" \
+			--cache-control "public, max-age=3600, must-revalidate" \
+			--content-type "text/html"; \
+		echo "$(BLUE)Uploading CSS files (long cache)...$(NC)"; \
+		aws s3 sync out/ s3://$(BUCKET_NAME)/ --profile $(AWS_PROFILE) --delete \
+			--exclude "*" \
+			--include "*.css" \
+			--cache-control "public, max-age=31536000, immutable" \
+			--content-type "text/css"; \
+		echo "$(BLUE)Uploading JS files (long cache)...$(NC)"; \
+		aws s3 sync out/ s3://$(BUCKET_NAME)/ --profile $(AWS_PROFILE) --delete \
+			--exclude "*" \
+			--include "*.js" \
+			--cache-control "public, max-age=31536000, immutable" \
+			--content-type "application/javascript"; \
+		echo "$(BLUE)Uploading images (long cache)...$(NC)"; \
+		aws s3 sync out/ s3://$(BUCKET_NAME)/ --profile $(AWS_PROFILE) --delete \
+			--exclude "*" \
+			--include "*.jpg" \
+			--include "*.jpeg" \
+			--include "*.png" \
+			--include "*.gif" \
+			--include "*.webp" \
+			--include "*.svg" \
+			--include "*.ico" \
+			--cache-control "public, max-age=31536000, immutable"; \
+		echo "$(BLUE)Uploading fonts (long cache)...$(NC)"; \
+		aws s3 sync out/ s3://$(BUCKET_NAME)/ --profile $(AWS_PROFILE) --delete \
+			--exclude "*" \
+			--include "*.woff" \
+			--include "*.woff2" \
+			--include "*.ttf" \
+			--include "*.eot" \
+			--cache-control "public, max-age=31536000, immutable"; \
+		echo "$(BLUE)Uploading other files...$(NC)"; \
+		aws s3 sync out/ s3://$(BUCKET_NAME)/ --profile $(AWS_PROFILE) --delete \
+			--exclude "*.html" \
+			--exclude "*.css" \
+			--exclude "*.js" \
+			--exclude "*.jpg" \
+			--exclude "*.jpeg" \
+			--exclude "*.png" \
+			--exclude "*.gif" \
+			--exclude "*.webp" \
+			--exclude "*.svg" \
+			--exclude "*.ico" \
+			--exclude "*.woff" \
+			--exclude "*.woff2" \
+			--exclude "*.ttf" \
+			--exclude "*.eot" \
+			--exclude "*.map" \
+			--cache-control "public, max-age=86400"; \
 	else \
 		echo "$(YELLOW)Warning: Static export not found. Using standard Next.js build.$(NC)"; \
 		echo "$(YELLOW)Note: For S3 static hosting, configure 'output: export' in next.config.mjs$(NC)"; \
-		echo "$(BLUE)Uploading .next/static to S3...$(NC)"; \
-		aws s3 sync .next/static s3://$(BUCKET_NAME)/_next/static --profile $(AWS_PROFILE) --delete --exclude "*.map"; \
+		echo "$(BLUE)Uploading .next/static to S3 with cache headers...$(NC)"; \
+		aws s3 sync .next/static s3://$(BUCKET_NAME)/_next/static --profile $(AWS_PROFILE) --delete \
+			--exclude "*.map" \
+			--cache-control "public, max-age=31536000, immutable"; \
 	fi
 	@echo "$(GREEN)Upload completed!$(NC)"
 	@echo "$(BLUE)CloudFront distribution may take a few minutes to update$(NC)"
