@@ -5,12 +5,12 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --primary: #FED835;
-  --secondary: #304fff;
+  --primary: #4FD1C7;
+  --secondary: #2D7D7A;
 
-  --primary-accent: #e5c230;
+  --primary-accent: #38B2AC;
   --foreground-accent: #454545;
-  --hero-background: #F3F3F5;
+  --hero-background: #ffffff;
 }
 
 html {

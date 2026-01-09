@@ -1,9 +1,9 @@
 export const siteDetails = {
-    siteName: 'Finwise',
-    siteUrl: 'https://finwise-omega.vercel.app/',
+    siteName: 'BookSolo',
+    siteUrl: 'https://booksolo.ai/',
     metadata: {
-        title: 'Finwise - Next.js and Tailwind CSS Landing Page Template',
-        description: 'Finwise empowers businesses with cutting-edge technology solutions to drive success and efficiency.',
+        title: 'BookSolo - AI Chatbots for Solo Entrepreneurs',
+        description: 'AI-powered chatbots with integrations to multiple communication channels. Handle 80% of customer queries 24/7. Reduce no-shows, save time, and grow your solo business.',
     },
     language: 'en-us',
     locale: 'en-US',

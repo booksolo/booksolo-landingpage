@@ -1,5 +1,5 @@
 export const heroDetails = {
-    heading: 'Smart, Secure, Simple Financial Management',
-    subheading: 'From effortless budgeting to real-time investment insights, Finwise puts you in control of your money like never before',
+    heading: 'AI Chatbots for Solo Entrepreneurs',
+    subheading: 'Custom AI chatbots with integrations to multiple communication channels. Handle 80% of customer queries 24/7. Reduce no-shows, save 3-5 hours daily, and focus on growing your business.',
     centerImageSrc: '/images/hero-mockup.webp',
 }
