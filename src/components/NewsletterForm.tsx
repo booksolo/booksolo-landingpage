@@ -1,21 +1,24 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 
 declare global {
     interface Window {
         turnstile?: {
-            render: (element: HTMLElement, options: {
-                sitekey: string;
-                callback?: (token: string) => void;
-                'error-callback'?: () => void;
-                'expired-callback'?: () => void;
-                theme?: 'light' | 'dark' | 'auto';
-                size?: 'normal' | 'compact' | 'invisible';
-                language?: string;
-            }) => string;
-            reset: (widgetId: string) => void;
-            remove: (widgetId: string) => void;
+            getResponse: (widgetId?: string) => string | undefined;
+            reset: (widgetId?: string) => void;
+        };
+    }
+}
+
+declare global {
+    interface Window {
+        onTurnstileSuccess?: (token: string) => void;
+        onTurnstileError?: () => void;
+        onTurnstileExpired?: () => void;
+        turnstile?: {
+            getResponse: (widgetId?: string) => string | undefined;
+            reset: (widgetId?: string) => void;
         };
     }
 }
@@ -24,72 +27,29 @@ const NewsletterForm: React.FC = () => {
     const [email, setEmail] = useState('');
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
-    const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
-    const turnstileWidgetId = useRef<string | null>(null);
-    const turnstileRef = useRef<HTMLDivElement>(null);
-    
-    const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || '';
 
     useEffect(() => {
-        // Only load Turnstile if site key is configured
-        if (!turnstileSiteKey) {
-            console.warn('Turnstile site key not configured - skipping Turnstile widget');
-            // Allow form submission without Turnstile in dev mode
-            setTurnstileToken('dev-mode-no-turnstile');
-            return;
+        // Set up Turnstile callbacks for implicit rendering
+        if (typeof window !== 'undefined') {
+            window.onTurnstileSuccess = (token: string) => {
+                console.log('Turnstile verified:', token);
+            };
+            window.onTurnstileError = () => {
+                setMessage({ type: 'error', text: 'Security verification error. Please refresh the page.' });
+            };
+            window.onTurnstileExpired = () => {
+                // Token expired - widget will auto-refresh
+                console.log('Turnstile token expired');
+            };
         }
-
-        // Load Turnstile script
-        const script = document.createElement('script');
-        script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
-        script.async = true;
-        script.defer = true;
-        script.onload = () => {
-            // Render Turnstile widget after script loads
-            if (window.turnstile && turnstileRef.current && turnstileSiteKey) {
-                turnstileWidgetId.current = window.turnstile.render(turnstileRef.current, {
-                    sitekey: turnstileSiteKey,
-                    theme: 'light',
-                    size: 'normal',
-                    callback: (token: string) => {
-                        setTurnstileToken(token);
-                    },
-                    'error-callback': () => {
-                        setTurnstileToken(null);
-                        setMessage({ type: 'error', text: 'Security verification error. Please refresh the page.' });
-                    },
-                    'expired-callback': () => {
-                        setTurnstileToken(null);
-                        if (turnstileWidgetId.current && window.turnstile) {
-                            window.turnstile.reset(turnstileWidgetId.current);
-                        }
-                    }
-                });
-            }
-        };
-        script.onerror = () => {
-            console.error('Failed to load Turnstile script');
-            setMessage({ type: 'error', text: 'Failed to load security verification. Please refresh the page.' });
-        };
-        document.body.appendChild(script);
-
-        return () => {
-            // Cleanup
-            if (turnstileWidgetId.current && window.turnstile) {
-                window.turnstile.remove(turnstileWidgetId.current);
-            }
-            if (document.body.contains(script)) {
-                document.body.removeChild(script);
-            }
-        };
-    }, [turnstileSiteKey]);
+    }, []);
 
     const validateEmail = (email: string): boolean => {
         const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         return pattern.test(email);
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setMessage(null);
 
@@ -103,12 +63,14 @@ const NewsletterForm: React.FC = () => {
             return;
         }
 
-        if (!turnstileToken || turnstileToken === 'dev-mode-no-turnstile') {
-            // Skip Turnstile verification if not configured (dev mode)
-            if (turnstileSiteKey && !turnstileToken) {
-                setMessage({ type: 'error', text: 'Please wait for security verification' });
-                return;
-            }
+        // Get Turnstile token from form (implicit rendering adds hidden input with name 'cf-turnstile-response')
+        const form = e.currentTarget;
+        const formData = new FormData(form);
+        const turnstileToken = formData.get('cf-turnstile-response') as string | null;
+        
+        if (!turnstileToken) {
+            setMessage({ type: 'error', text: 'Please complete the security verification' });
+            return;
         }
 
         setLoading(true);
@@ -133,18 +95,16 @@ const NewsletterForm: React.FC = () => {
             if (response.ok && data.success) {
                 setMessage({ type: 'success', text: 'Thank you! You have been subscribed to the newsletter.' });
                 setEmail('');
-                setTurnstileToken(null);
                 // Reset Turnstile widget
-                if (turnstileWidgetId.current && window.turnstile) {
-                    window.turnstile.reset(turnstileWidgetId.current);
+                if (window.turnstile) {
+                    window.turnstile.reset();
                 }
             } else {
                 setMessage({ type: 'error', text: data.error || 'An error occurred. Please try again.' });
                 // Reset Turnstile widget on error
-                if (turnstileWidgetId.current && window.turnstile) {
-                    window.turnstile.reset(turnstileWidgetId.current);
+                if (window.turnstile) {
+                    window.turnstile.reset();
                 }
-                setTurnstileToken(null);
             }
         } catch (error) {
             console.error('Newsletter subscription error:', error);
@@ -170,12 +130,18 @@ const NewsletterForm: React.FC = () => {
                     disabled={loading}
                     required
                 />
-                {turnstileSiteKey && (
-                    <div ref={turnstileRef} className="flex justify-center"></div>
-                )}
+                <div 
+                    className="cf-turnstile flex justify-center" 
+                    data-sitekey="0x4AAAAAACLhqBlL3PU3Rxhe"
+                    data-theme="light"
+                    data-size="normal"
+                    data-callback="onTurnstileSuccess"
+                    data-error-callback="onTurnstileError"
+                    data-expired-callback="onTurnstileExpired"
+                />
                 <button
                     type="submit"
-                    disabled={loading || (turnstileSiteKey ? !turnstileToken : false)}
+                    disabled={loading}
                     className="px-6 py-2 bg-foreground text-white rounded-md hover:bg-foreground/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     {loading ? 'Subscribing...' : 'Subscribe'}
