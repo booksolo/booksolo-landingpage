@@ -82,7 +82,6 @@ const NewsletterForm: React.FC = () => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Origin': window.location.origin,
                 },
                 body: JSON.stringify({ 
                     email: email.trim().toLowerCase(),
