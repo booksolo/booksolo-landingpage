@@ -17,7 +17,7 @@ YELLOW := \033[0;33m
 RED := \033[0;31m
 NC := \033[0m # No Color
 
-.PHONY: help install build clean deploy upload check-aws check-bucket
+.PHONY: help install build clean deploy upload check-aws check-bucket fix-content-type invalidate-cache
 
 help: ## Show this help message
 	@echo "$(BLUE)BookSolo Landing Page - Makefile Commands$(NC)"
@@ -87,11 +87,16 @@ upload: check-bucket ## Upload build artifacts to S3 (requires build first)
 			--cache-control "public, max-age=31536000, immutable" \
 			--content-type "text/css"; \
 		echo "$(BLUE)Uploading JS files (long cache)...$(NC)"; \
+		find out -type f -name "*.js" | while read -r file; do \
+			rel_path=$${file#out/}; \
+			aws s3 cp "$$file" "s3://$(BUCKET_NAME)/$$rel_path" \
+				--profile $(AWS_PROFILE) \
+				--cache-control "public, max-age=31536000, immutable" \
+				--content-type "application/javascript"; \
+		done; \
 		aws s3 sync out/ s3://$(BUCKET_NAME)/ --profile $(AWS_PROFILE) --delete \
-			--exclude "*" \
-			--include "*.js" \
-			--cache-control "public, max-age=31536000, immutable" \
-			--content-type "application/javascript"; \
+			--exclude "*.js" \
+			--exclude "_next/**/*.js"; \
 		echo "$(BLUE)Uploading images (long cache)...$(NC)"; \
 		aws s3 sync out/ s3://$(BUCKET_NAME)/ --profile $(AWS_PROFILE) --delete \
 			--exclude "*" \
@@ -116,6 +121,7 @@ upload: check-bucket ## Upload build artifacts to S3 (requires build first)
 			--exclude "*.html" \
 			--exclude "*.css" \
 			--exclude "*.js" \
+			--exclude "_next/static/**/*.js" \
 			--exclude "*.jpg" \
 			--exclude "*.jpeg" \
 			--exclude "*.png" \
@@ -152,6 +158,47 @@ lint: ## Run ESLint
 
 test: ## Run tests (if configured)
 	@echo "$(YELLOW)Tests not configured$(NC)"
+
+fix-content-type: check-bucket ## Fix Content-Type for existing JS files in S3
+	@echo "$(BLUE)Fixing Content-Type for JS files in S3...$(NC)"
+	@aws s3api list-objects-v2 \
+		--bucket $(BUCKET_NAME) \
+		--profile $(AWS_PROFILE) \
+		--query "Contents[?ends_with(Key, '.js')].Key" \
+		--output text | \
+		tr '\t' '\n' | \
+		while read -r key; do \
+			echo "$(BLUE)Fixing: $$key$(NC)"; \
+			aws s3api copy-object \
+				--bucket $(BUCKET_NAME) \
+				--copy-source "$(BUCKET_NAME)/$$key" \
+				--key "$$key" \
+				--profile $(AWS_PROFILE) \
+				--metadata-directive REPLACE \
+				--content-type "application/javascript" \
+				--cache-control "public, max-age=31536000, immutable" \
+				> /dev/null 2>&1; \
+		done
+	@echo "$(GREEN)Content-Type fixed!$(NC)"
+	@echo "$(YELLOW)Run 'make invalidate-cache' to clear CloudFront cache$(NC)"
+
+invalidate-cache: check-aws ## Invalidate CloudFront cache (requires distribution ID)
+	@echo "$(BLUE)Invalidating CloudFront cache...$(NC)"
+	@if [ -z "$(DIST_ID)" ]; then \
+		echo "$(YELLOW)Getting CloudFront distribution ID from Terraform...$(NC)"; \
+		DIST_ID=$$(cd ../booksolo-infrastructure && terraform output -raw landing_page_cloudfront_distribution_id 2>/dev/null); \
+		if [ -z "$$DIST_ID" ]; then \
+			echo "$(RED)Error: Could not get distribution ID. Set DIST_ID manually:$(NC)"; \
+			echo "  make invalidate-cache DIST_ID=YOUR_DIST_ID"; \
+			exit 1; \
+		fi; \
+	fi; \
+	echo "$(BLUE)Invalidating cache for distribution: $$DIST_ID$(NC)"; \
+	aws cloudfront create-invalidation \
+		--distribution-id $$DIST_ID \
+		--paths "/*" \
+		--profile $(AWS_PROFILE) \
+		--output json | jq -r '.Invalidation.Id' | xargs -I {} echo "$(GREEN)Invalidation created: {}$(NC)"
 
 info: ## Show build and deployment information
 	@echo "$(BLUE)Build Information:$(NC)"

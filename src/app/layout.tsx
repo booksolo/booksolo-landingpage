@@ -45,7 +45,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="preconnect" href="https://challenges.cloudflare.com" />
+        <link rel="preconnect" href="https://challenges.cloudflare.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://api.booksolo.eu" crossOrigin="anonymous" />
       </head>
       <body
         className={`${manrope.className} ${sourceSans.className} antialiased`}
