@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import React, { useState } from 'react';
 import { Transition } from '@headlessui/react';
 import { HiOutlineXMark, HiBars3 } from 'react-icons/hi2';
@@ -21,9 +22,14 @@ const Header: React.FC = () => {
                 <nav className="shadow-md md:shadow-none bg-white md:bg-transparent mx-auto flex justify-between items-center py-2 px-5 md:py-10">
                     {/* Logo */}
                     <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-                        <span className="manrope text-xl md:text-2xl font-bold text-foreground cursor-pointer uppercase tracking-tight">
-                            BOOK SOLO
-                        </span>
+                        <Image 
+                            src="/images/Logo.png" 
+                            alt="BookSolo" 
+                            width={577} 
+                            height={108}
+                            className="h-12 md:h-16 w-auto"
+                            priority
+                        />
                     </Link>
 
                     {/* Desktop Menu */}

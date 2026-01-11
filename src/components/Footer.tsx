@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import React from 'react';
 
 import { siteDetails } from '@/data/siteDetails';
@@ -12,9 +13,13 @@ const Footer: React.FC = () => {
             <div className="max-w-7xl w-full mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-10">
                 <div>
                     <Link href="/" className="flex items-center">
-                        <span className="manrope text-xl font-bold text-foreground cursor-pointer uppercase tracking-tight">
-                            BOOK SOLO
-                        </span>
+                        <Image 
+                            src="/images/Logo.png" 
+                            alt="BookSolo" 
+                            width={577} 
+                            height={108}
+                            className="h-12 w-auto"
+                        />
                     </Link>
                     <p className="mt-3.5 text-foreground-accent">
                         {footerDetails.subheading}
