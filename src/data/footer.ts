@@ -25,13 +25,13 @@ export const footerDetails: {
     email: 'hello@booksolo.eu',
     telephone: '',
     socials: {
+        facebook: 'https://www.facebook.com/profile.php?id=61586280141672',
+        instagram: 'https://www.instagram.com/booksolo.ai/',
         // github: 'https://github.com',
         // x: 'https://twitter.com/x',
         // twitter: 'https://twitter.com/Twitter',
-        // facebook: 'https://facebook.com',
         // youtube: 'https://youtube.com',
         // linkedin: 'https://www.linkedin.com',
         // threads: 'https://www.threads.net',
-        // instagram: 'https://www.instagram.com',
     }
 }
