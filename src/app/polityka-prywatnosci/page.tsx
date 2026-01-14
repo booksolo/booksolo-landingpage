@@ -34,7 +34,7 @@ const PolitykaPrywatnosci: React.FC = () => {
               w aplikacji BookSolo (projekt edukacyjny).
             </p>
             <p>
-              Kontakt: <a href="mailto:uptake-outfit.1v@icloud.com" className="text-primary hover:underline">uptake-outfit.1v@icloud.com</a>
+              Kontakt: <a href="mailto:hello@booksolo.eu" className="text-primary hover:underline">hello@booksolo.eu</a>
             </p>
           </section>
 
@@ -130,7 +130,7 @@ const PolitykaPrywatnosci: React.FC = () => {
               <li><strong>Przenoszenia danych</strong> - mogę wyeksportować Twoje dane</li>
             </ul>
             <p>
-              <strong>Kontakt:</strong> <a href="mailto:uptake-outfit.1v@icloud.com" className="text-primary hover:underline">uptake-outfit.1v@icloud.com</a>
+              <strong>Kontakt:</strong> <a href="mailto:hello@booksolo.eu" className="text-primary hover:underline">hello@booksolo.eu</a>
             </p>
             <p className="text-sm text-gray-600">
               Postaram się odpowiedzieć w ciągu kilku dni, ale jako projekt hobbystyczny nie gwarantuję
@@ -191,7 +191,7 @@ const PolitykaPrywatnosci: React.FC = () => {
               można kontaktować się z Administratorem:
             </p>
             <p>
-              Email: <a href="mailto:uptake-outfit.1v@icloud.com" className="text-primary hover:underline">uptake-outfit.1v@icloud.com</a>
+              Email: <a href="mailto:hello@booksolo.eu" className="text-primary hover:underline">hello@booksolo.eu</a>
             </p>
           </section>
 

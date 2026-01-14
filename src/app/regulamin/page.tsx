@@ -212,7 +212,7 @@ const Regulamin: React.FC = () => {
           <section>
             <h2 className="text-2xl font-semibold mt-8 mb-4">10. Problemy i feedback</h2>
             <p>
-              Jeśli masz problem lub feedback, napisz: <a href="mailto:uptake-outfit.1v@icloud.com" className="text-primary hover:underline">uptake-outfit.1v@icloud.com</a>
+              Jeśli masz problem lub feedback, napisz: <a href="mailto:hello@booksolo.eu" className="text-primary hover:underline">hello@booksolo.eu</a>
             </p>
             <p className="text-sm text-gray-600">
               Postaram się pomóc, ale to projekt hobbystyczny - nie gwarantuję czasów odpowiedzi ani rozwiązania.
