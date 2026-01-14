@@ -8,7 +8,7 @@ NODE_ENV ?= production
 
 # Get AWS account ID and construct bucket name
 AWS_ACCOUNT_ID := $(shell aws sts get-caller-identity --profile $(AWS_PROFILE) --query Account --output text 2>/dev/null)
-BUCKET_NAME := booksolo-landing-page-production-$(AWS_ACCOUNT_ID)
+BUCKET_NAME := booksolo-landing-page-$(AWS_ACCOUNT_ID)
 
 # Colors for output
 BLUE := \033[0;34m

@@ -4,7 +4,7 @@
 
 AWS_PROFILE=${AWS_PROFILE:-booksolo}
 AWS_ACCOUNT_ID=$(aws sts get-caller-identity --profile $AWS_PROFILE --query Account --output text)
-BUCKET_NAME="booksolo-landing-page-production-${AWS_ACCOUNT_ID}"
+BUCKET_NAME="booksolo-landing-page-${AWS_ACCOUNT_ID}"
 
 echo "Fixing Content-Type for JS files in S3 bucket: ${BUCKET_NAME}"
 

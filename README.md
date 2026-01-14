@@ -61,8 +61,8 @@ Build the static site and deploy to S3 manually:
 # Build the static site
 npm run build
 
-# Get the S3 bucket name (format: booksolo-landing-page-production-{account_id})
-BUCKET_NAME="booksolo-landing-page-production-$(aws sts get-caller-identity --profile booksolo --query Account --output text)"
+# Get the S3 bucket name (format: booksolo-landing-page-{account_id})
+BUCKET_NAME="booksolo-landing-page-$(aws sts get-caller-identity --profile booksolo --query Account --output text)"
 
 # Upload to S3 bucket using the booksolo AWS profile
 # For static export (if next.config.mjs has output: 'export'):
@@ -80,10 +80,10 @@ If you know your bucket name, you can use:
 
 ```bash
 # For static export:
-npm run build && aws s3 sync out/ s3://booksolo-landing-page-production-{YOUR_ACCOUNT_ID}/ --profile booksolo --delete
+npm run build && aws s3 sync out/ s3://booksolo-landing-page-{YOUR_ACCOUNT_ID}/ --profile booksolo --delete
 
 # For standard build:
-npm run build && aws s3 sync .next/static s3://booksolo-landing-page-production-{YOUR_ACCOUNT_ID}/_next/static --profile booksolo --delete
+npm run build && aws s3 sync .next/static s3://booksolo-landing-page-{YOUR_ACCOUNT_ID}/_next/static --profile booksolo --delete
 ```
 
 **Get your AWS Account ID:**
