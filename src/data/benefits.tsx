@@ -4,44 +4,52 @@ import { IBenefit } from "@/types"
 
 export const benefits: IBenefit[] = [
     {
-        title: "24/7 Automated Customer Service",
-        description: "Your AI chatbot handles 80% of customer queries automatically, even when you're not available. Never miss a booking opportunity. Whether it's answering questions about your services, checking availability, or handling appointment requests, your chatbot works tirelessly to ensure every customer interaction is handled professionally and efficiently.",
+        title: "Automatic content creation",
+        description:
+            "Solo Social creates most of your social media content automatically, even when you’re busy with clients. Whether it’s captions, post ideas, or simple content plans for Facebook and Instagram, it works in the background to keep your profiles active and professional.",
         bullets: [
             {
-                title: "Instant Responses",
-                description: "Customers get immediate answers to their questions, improving satisfaction and conversion rates. No more waiting for business hours or playing phone tag. Your chatbot responds in milliseconds, providing accurate information about your services, pricing, availability, and policies. This instant gratification keeps potential customers engaged and significantly increases the likelihood of converting inquiries into bookings.",
+                title: "Instant content",
+                description:
+                    "Get ready-to-post captions and ideas in seconds, not hours. No more staring at a blank screen or wondering what to write.",
                 icon: <FiZap size={26} />
             },
             {
-                title: "Always Available",
-                description: "Works around the clock, handling inquiries even outside business hours. While you sleep, your chatbot continues to serve customers, capturing leads and bookings 24/7. Early morning inquiries, late-night questions, weekend requests—all handled seamlessly. This constant availability means you never lose a potential customer due to timing, maximizing your booking opportunities and revenue potential.",
+                title: "Always consistent",
+                description:
+                    "Stay visible every week, even when your schedule is full. Solo Social helps you keep a steady flow of posts over time.",
                 icon: <FiClock size={26} />
             },
             {
-                title: "Natural Conversations",
-                description: "AI-powered chatbot understands context and provides human-like responses across all channels. Advanced natural language processing enables your chatbot to understand customer intent, remember conversation history, and respond appropriately to complex queries. Customers feel like they're talking to a knowledgeable assistant, not a robotic script. The chatbot adapts its tone and responses based on the conversation flow, ensuring a personalized experience that builds trust and encourages bookings.",
+                title: "Natural voice",
+                description:
+                    "Content matches your tone and niche, so it sounds like you, not a generic robot. It fits your services, city and way of speaking.",
                 icon: <FiMessageCircle size={26} />
             }
         ],
         // imageSrc: "/images/mockup-1.webp"
     },
     {
-        title: "Multi-Channel Integration",
-        description: "Connect your chatbot to multiple communication channels including WhatsApp, SMS, and more. Reach customers where they are.",
+        title: "Content for the channels that matter",
+        description:
+            "Solo Social focuses on the platforms your clients actually use, like Facebook and Instagram, so you can show up where they scroll every day.",
         bullets: [
             {
-                title: "Multiple Channels",
-                description: "Integrate with WhatsApp, SMS, and other popular communication platforms your customers use.",
+                title: "Different formats, one tool",
+                description:
+                    "Generate captions, post ideas and simple content plans from a single place, ready for feed posts, stories or reels descriptions.",
                 icon: <FiLink size={26} />
             },
             {
-                title: "Automated Reminders",
-                description: "Reduce no-shows by up to 70% with timely appointment reminders sent automatically.",
+                title: "Automatic posting rhythm",
+                description:
+                    "Get suggestions for what to publish this week and in what order, so your profiles stay active without daily planning.",
                 icon: <FiSmartphone size={26} />
             },
             {
-                title: "Calendar Integration",
-                description: "Sync with your existing booking systems like Booksy or Calendly.",
+                title: "Plan once, reuse often",
+                description:
+                    "Turn one idea into multiple posts: tips, before/after, education or promotions, reusing your best content in smart ways.",
                 icon: <FiCalendar size={26} />
             }
         ],
@@ -49,21 +57,25 @@ export const benefits: IBenefit[] = [
     },
     {
         title: "Save Time, Grow Revenue",
-        description: "Free up 3-5 hours daily from phone calls and manual administration. Focus on what you do best - serving your customers.",
+        description:
+            "Replace long hours of thinking about content with a few focused minutes per week. Prepare posts quickly and spend the rest of your time with clients.",
         bullets: [
             {
-                title: "Reduce Manual Work",
-                description: "Automate repetitive tasks like answering common questions and managing bookings.",
+                title: "Less manual work",
+                description:
+                    "Stop writing every post from scratch. Use generated drafts as a base, then just review and adjust.",
                 icon: <FiClock size={26} />
             },
             {
-                title: "Lower No-Show Rate",
-                description: "Cut no-shows from 30% to under 10% with automated reminders and confirmations.",
+                title: "More visibility",
+                description:
+                    "Consistent, better content means more people see your business and remember you when they need your service.",
                 icon: <FiTrendingUp size={26} />
             },
             {
-                title: "More Time for Revenue",
-                description: "Spend less time on administration and more time generating income.",
+                title: "More time for revenue",
+                description:
+                    "Spend less time stuck in content creation and more time doing paid work or talking to real clients.",
                 icon: <FiZap size={26} />
             }
         ],

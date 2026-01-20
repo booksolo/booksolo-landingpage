@@ -7,7 +7,8 @@ export const footerDetails: {
     telephone: string;
     socials: ISocials;
 } = {
-    subheading: "AI-powered chatbots with integrations to multiple communication channels for solo entrepreneurs. Reduce no-shows, save time, and grow your business.",
+    subheading:
+        "Social media content tool for solo service businesses. Create ready-to-post Facebook and Instagram content in minutes, stay consistent, and attract more local clients.",
     quickLinks: [
         {
             text: "Features",
