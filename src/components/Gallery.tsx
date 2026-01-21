@@ -37,6 +37,10 @@ const Gallery: React.FC = () => {
 
   const hasItems = items.length > 0;
 
+  if (!loading && !hasItems) {
+    return null;
+  }
+
   return (
     <section
       id="gallery"
@@ -56,7 +60,7 @@ const Gallery: React.FC = () => {
       )}
 
       {!loading && hasItems && (
-        <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-8 grid max-w-5xl mx-auto grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((item) => (
             <a
               key={item.image}
