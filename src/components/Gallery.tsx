@@ -50,7 +50,9 @@ const Gallery: React.FC = () => {
         Inspiration gallery
       </h2>
       <p className="mt-2 text-center text-sm text-slate-600">
-        Real posts created for the @booksolo.ai profiles.
+        Real posts created for the @booksolo.ai profiles – each one crafted
+        around the client&apos;s business, product or solo journey and aligned
+        with their brand and logo colours when needed.
       </p>
 
       {loading && (
