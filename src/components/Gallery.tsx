@@ -38,16 +38,21 @@ const Gallery: React.FC = () => {
   const hasItems = items.length > 0;
 
   return (
-    <section id="gallery" className="mt-16">
-      <h2 className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
+    <section
+      id="gallery"
+      className="mt-24 border-t border-slate-200 pt-12 pb-12"
+    >
+      <h2 className="text-center text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
         Inspiration gallery
       </h2>
-      <p className="mt-2 text-sm text-slate-600">
+      <p className="mt-2 text-center text-sm text-slate-600">
         Real posts created for the @booksolo.ai profiles.
       </p>
 
       {loading && (
-        <p className="mt-6 text-sm text-slate-500">Gallery is loading…</p>
+        <p className="mt-6 text-center text-sm text-slate-500">
+          Gallery is loading…
+        </p>
       )}
 
       {!loading && hasItems && (

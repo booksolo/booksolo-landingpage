@@ -13,6 +13,10 @@ export const footerDetails: {
         {
             text: "Features",
             url: "#features"
+        },
+        {
+            text: "Gallery",
+            url: "#gallery"
         }
         // {
         //     text: "Pricing",
