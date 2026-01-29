@@ -9,45 +9,6 @@ type GalleryItem = {
   title?: string;
 };
 
-const fallbackItems: GalleryItem[] = [
-  {
-    image: "/images/mockup-1.webp",
-    created_at: "2026-01-20T10:00:00Z",
-    platform: "instagram",
-    title: "Product highlight",
-  },
-  {
-    image: "/images/mockup-2.webp",
-    created_at: "2026-01-19T10:00:00Z",
-    platform: "instagram",
-    title: "Feature spotlight",
-  },
-  {
-    image: "/images/hero-mockup.webp",
-    created_at: "2026-01-18T10:00:00Z",
-    platform: "instagram",
-    title: "Launch teaser",
-  },
-  {
-    image: "/images/hero-transactions.webp",
-    created_at: "2026-01-17T10:00:00Z",
-    platform: "instagram",
-    title: "Solo journey update",
-  },
-  {
-    image: "/images/hero-chart.webp",
-    created_at: "2026-01-16T10:00:00Z",
-    platform: "instagram",
-    title: "Growth snapshot",
-  },
-  {
-    image: "/images/testimonial-1.webp",
-    created_at: "2026-01-15T10:00:00Z",
-    platform: "instagram",
-    title: "Customer quote",
-  },
-];
-
 const Gallery: React.FC = () => {
   const [items, setItems] = useState<GalleryItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -61,22 +22,18 @@ const Gallery: React.FC = () => {
         });
         if (!res.ok) {
           console.error("Failed to load gallery manifest", res.statusText);
-          if (res.status === 403 || res.status === 404) {
-            setManifestUnavailable(true);
-          } else {
-            setItems(fallbackItems);
-          }
+          setManifestUnavailable(true);
           return;
         }
         const data = (await res.json()) as GalleryItem[];
         if (Array.isArray(data) && data.length > 0) {
           setItems(data);
         } else {
-          setItems(fallbackItems);
+          setManifestUnavailable(true);
         }
       } catch (err) {
         console.error("Error fetching gallery manifest", err);
-        setItems(fallbackItems);
+        setManifestUnavailable(true);
       } finally {
         setLoading(false);
       }
