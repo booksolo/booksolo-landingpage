@@ -160,9 +160,13 @@ const PolitykaPrywatnosci: React.FC = () => {
           <section>
             <h2 className="text-2xl font-semibold mt-8 mb-4">8. Pliki cookies i technologie śledzące</h2>
             <p>
-              Aplikacja może wykorzystywać pliki cookies i podobne technologie wyłącznie w celu 
-              zapewnienia prawidłowego funkcjonowania usługi. Aplikacja nie wykorzystuje cookies 
-              do celów marketingowych ani śledzenia użytkowników.
+              Aplikacja wykorzystuje pliki cookies i podobne technologie w celach analitycznych
+              (Google Analytics), aby zrozumieć ruch na stronie i ulepszać serwis. Pliki cookies
+              analityczne są uruchamiane wyłącznie po wyrażeniu zgody w banerze cookies.
+            </p>
+            <p>
+              Możesz w każdej chwili zmienić decyzję, czyszcząc ustawienia cookies w swojej
+              przeglądarce lub ponownie odwiedzając stronę w trybie incognito.
             </p>
           </section>
 
