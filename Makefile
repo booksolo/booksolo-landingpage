@@ -5,6 +5,7 @@
 AWS_PROFILE ?= booksolo
 AWS_REGION ?= eu-central-1
 NODE_ENV ?= production
+GALLERY_EXCLUDE := --exclude "gallery/*"
 
 # Get AWS account ID and construct bucket name
 AWS_ACCOUNT_ID := $(shell aws sts get-caller-identity --profile $(AWS_PROFILE) --query Account --output text 2>/dev/null)
@@ -76,12 +77,14 @@ upload: check-bucket ## Upload build artifacts to S3 (requires build first)
 		echo "$(BLUE)Uploading static export (out/) to S3 with cache headers...$(NC)"; \
 		echo "$(BLUE)Uploading HTML files (short cache)...$(NC)"; \
 		aws s3 sync out/ s3://$(BUCKET_NAME)/ --profile $(AWS_PROFILE) --delete \
+			$(GALLERY_EXCLUDE) \
 			--exclude "*" \
 			--include "*.html" \
 			--cache-control "public, max-age=3600, must-revalidate" \
 			--content-type "text/html"; \
 		echo "$(BLUE)Uploading CSS files (long cache)...$(NC)"; \
 		aws s3 sync out/ s3://$(BUCKET_NAME)/ --profile $(AWS_PROFILE) --delete \
+			$(GALLERY_EXCLUDE) \
 			--exclude "*" \
 			--include "*.css" \
 			--cache-control "public, max-age=31536000, immutable" \
@@ -95,10 +98,12 @@ upload: check-bucket ## Upload build artifacts to S3 (requires build first)
 				--content-type "application/javascript"; \
 		done; \
 		aws s3 sync out/ s3://$(BUCKET_NAME)/ --profile $(AWS_PROFILE) --delete \
+			$(GALLERY_EXCLUDE) \
 			--exclude "*.js" \
 			--exclude "_next/**/*.js"; \
 		echo "$(BLUE)Uploading images (long cache)...$(NC)"; \
 		aws s3 sync out/ s3://$(BUCKET_NAME)/ --profile $(AWS_PROFILE) --delete \
+			$(GALLERY_EXCLUDE) \
 			--exclude "*" \
 			--include "*.jpg" \
 			--include "*.jpeg" \
@@ -110,6 +115,7 @@ upload: check-bucket ## Upload build artifacts to S3 (requires build first)
 			--cache-control "public, max-age=31536000, immutable"; \
 		echo "$(BLUE)Uploading fonts (long cache)...$(NC)"; \
 		aws s3 sync out/ s3://$(BUCKET_NAME)/ --profile $(AWS_PROFILE) --delete \
+			$(GALLERY_EXCLUDE) \
 			--exclude "*" \
 			--include "*.woff" \
 			--include "*.woff2" \
@@ -118,6 +124,7 @@ upload: check-bucket ## Upload build artifacts to S3 (requires build first)
 			--cache-control "public, max-age=31536000, immutable"; \
 		echo "$(BLUE)Uploading other files...$(NC)"; \
 		aws s3 sync out/ s3://$(BUCKET_NAME)/ --profile $(AWS_PROFILE) --delete \
+			$(GALLERY_EXCLUDE) \
 			--exclude "*.html" \
 			--exclude "*.css" \
 			--exclude "*.js" \
