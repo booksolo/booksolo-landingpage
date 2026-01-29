@@ -51,6 +51,7 @@ const fallbackItems: GalleryItem[] = [
 const Gallery: React.FC = () => {
   const [items, setItems] = useState<GalleryItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [manifestUnavailable, setManifestUnavailable] = useState(false);
 
   useEffect(() => {
     const loadManifest = async () => {
@@ -60,7 +61,11 @@ const Gallery: React.FC = () => {
         });
         if (!res.ok) {
           console.error("Failed to load gallery manifest", res.statusText);
-          setItems(fallbackItems);
+          if (res.status === 403 || res.status === 404) {
+            setManifestUnavailable(true);
+          } else {
+            setItems(fallbackItems);
+          }
           return;
         }
         const data = (await res.json()) as GalleryItem[];
@@ -82,7 +87,7 @@ const Gallery: React.FC = () => {
 
   const hasItems = items.length > 0;
 
-  if (!loading && !hasItems) {
+  if (!loading && (manifestUnavailable || !hasItems)) {
     return null;
   }
 
