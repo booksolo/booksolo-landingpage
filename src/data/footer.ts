@@ -17,6 +17,10 @@ export const footerDetails: {
         {
             text: "Gallery",
             url: "#gallery"
+        },
+        {
+            text: "AI chat",
+            url: "#pricing"
         }
         // {
         //     text: "Pricing",

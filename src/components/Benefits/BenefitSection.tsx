@@ -1,6 +1,7 @@
 "use client"
 import clsx from "clsx";
 import { motion, Variants } from "framer-motion"
+import Image from "next/image";
 
 import BenefitBullet from "./BenefitBullet";
 import SectionTitle from "../SectionTitle";
@@ -46,50 +47,70 @@ export const childVariants = {
 };
 
 const BenefitSection: React.FC<Props> = ({ benefit, imageAtRight }: Props) => {
-    const { title, description, bullets } = benefit;
+    const { title, description, bullets, imageSrc } = benefit;
 
     return (
         <section className="benefit-section py-12 md:py-16">
             <motion.div
-                className="flex flex-wrap flex-col items-center justify-center gap-2 lg:flex-row lg:gap-20 lg:flex-nowrap mb-16 md:mb-24"
+                className="overflow-hidden"
                 variants={containerVariants}
                 initial="offscreen"
                 whileInView="onscreen"
                 viewport={{ once: true }}
             >
-                <div
-                    className={clsx("flex flex-wrap items-center w-full max-w-lg", { "justify-start": imageAtRight, "lg:order-1 justify-end": !imageAtRight })}
-                    
-                >
-                    <div className="w-full text-center lg:text-left">
-                        <motion.div
-                            className="flex flex-col w-full"
-                            variants={childVariants}
-                        >
-                            <SectionTitle>
-                                <h3 className="lg:max-w-2xl">
-                                    {title}
-                                </h3>
-                            </SectionTitle>
-
-                            <p className="mt-4 md:mt-6 mx-auto lg:ml-0 leading-relaxed text-foreground-accent text-base md:text-lg">
-                                {description}
-                            </p>
-                        </motion.div>
-
-                        <div className="mx-auto lg:ml-0 w-full mt-8 md:mt-10">
-                            {bullets.map((item, index) => (
-                                <BenefitBullet key={index} title={item.title} icon={item.icon} description={item.description} />
-                            ))}
+                <div className="mx-auto max-w-7xl px-6 lg:px-8">
+                    <div className={clsx(
+                        "mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-12 lg:gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-start",
+                        { "lg:grid-flow-col-dense": !imageAtRight }
+                    )}>
+                        <div className={clsx("lg:pr-8 lg:pt-4 order-1", { "lg:pl-8 lg:pr-0 lg:col-start-2": !imageAtRight })}>
+                            <div className="lg:max-w-lg">
+                                <motion.div variants={childVariants}>
+                                    <SectionTitle>
+                                        <h3 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+                                            {title}
+                                        </h3>
+                                    </SectionTitle>
+                                    <p className="mt-6 text-lg leading-8 text-foreground-accent">
+                                        {description}
+                                    </p>
+                                </motion.div>
+                                <dl className="mt-10 max-w-xl space-y-8 text-base leading-7 text-foreground-accent lg:max-w-none">
+                                    {bullets.map((item, index) => (
+                                        <BenefitBullet 
+                                            key={index} 
+                                            title={item.title} 
+                                            icon={item.icon} 
+                                            description={item.description} 
+                                        />
+                                    ))}
+                                </dl>
+                            </div>
                         </div>
+                        {imageSrc && (
+                            <div className={clsx(
+                                "flex items-start justify-center order-2",
+                                { "lg:order-last": imageAtRight, "lg:order-first": !imageAtRight }
+                            )}>
+                                <div className="relative w-full max-w-md lg:max-w-none">
+                                    <Image
+                                        src={imageSrc}
+                                        alt={title}
+                                        width={1200}
+                                        height={800}
+                                        className="w-full h-auto rounded-xl shadow-xl ring-1 ring-gray-400/10 object-cover"
+                                        priority={false}
+                                    />
+                                </div>
+                            </div>
+                        )}
+                        {!imageSrc && (
+                            <div className="flex flex-wrap items-center w-full max-w-lg">
+                                {/* Placeholder for sections without images */}
+                            </div>
+                        )}
                     </div>
                 </div>
-
-                {/* <div className={clsx("mt-5 lg:mt-0", { "lg:order-2": imageAtRight })}>
-                    <div className={clsx("w-fit flex", { "justify-start": imageAtRight, "justify-end": !imageAtRight })}>
-                        <Image src={imageSrc} alt="title" width="384" height="762" quality={100} className="lg:ml-0" />
-                    </div>
-                </div> */}
             </motion.div>
         </section>
     );

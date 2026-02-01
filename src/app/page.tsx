@@ -6,6 +6,7 @@ import Pricing from "@/components/Pricing/Pricing";
 import Benefits from "@/components/Benefits/Benefits";
 import Container from "@/components/Container";
 import Gallery from "@/components/Gallery";
+import Newsletter from "@/components/Newsletter";
 import Section from "@/components/Section";
 // import Stats from "@/components/Stats";
 // import CTA from "@/components/CTA";
@@ -41,6 +42,7 @@ const HomePage: React.FC = () => {
 
         {/* <CTA /> */}
       </Container>
+      <Newsletter />
     </>
   );
 };

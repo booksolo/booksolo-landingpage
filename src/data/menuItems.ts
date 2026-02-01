@@ -8,6 +8,10 @@ export const menuItems: IMenuItem[] = [
     {
         text: "Gallery",
         url: "#gallery"
+    },
+    {
+        text: "AI chat",
+        url: "#pricing"
     }
     // {
     //     text: "Pricing",

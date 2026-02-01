@@ -5,12 +5,11 @@ import React from 'react';
 import { siteDetails } from '@/data/siteDetails';
 import { footerDetails } from '@/data/footer';
 import { getPlatformIconByName } from '@/utils';
-import NewsletterForm from './NewsletterForm';
 
 const Footer: React.FC = () => {
     return (
         <footer className="bg-white text-foreground py-10">
-            <div className="max-w-7xl w-full mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-10">
+            <div className="max-w-7xl w-full mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10">
                 <div>
                     <Link href="/" className="flex items-center">
                         <Image 
@@ -59,9 +58,6 @@ const Footer: React.FC = () => {
                             })}
                         </div>
                     )}
-                </div>
-                <div>
-                    <NewsletterForm />
                 </div>
             </div>
             <div className="mt-8 md:text-center text-foreground-accent px-6">
