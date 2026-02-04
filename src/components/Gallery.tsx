@@ -86,45 +86,24 @@ const Gallery: React.FC = () => {
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={item.image}
-                        alt={item.title ?? "Example post from the gallery"}
+                        alt="Gallery image"
                         className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
                         loading="lazy"
                       />
                     </div>
                   </div>
                 </a>
-                <div className="flex items-center gap-x-4 text-xs mt-4">
-                  {item.created_at && (
-                    <time
-                      dateTime={item.created_at}
-                      className="text-foreground-accent"
-                    >
-                      {new Date(item.created_at).toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "short",
-                        day: "numeric",
-                      })}
-                    </time>
-                  )}
-                  {item.platform && (
-                    <span className="relative z-10 rounded-full bg-primary/10 px-3 py-1.5 font-medium text-foreground-accent uppercase tracking-wide">
-                      {item.platform}
-                    </span>
-                  )}
-                </div>
-                {item.title && (
-                  <div className="group relative mt-3">
-                    <h3 className="text-lg font-semibold leading-6 text-foreground group-hover:text-primary-accent transition-colors">
-                      <a
-                        href={item.image}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <span className="absolute inset-0" />
-                        {item.title}
-                      </a>
-                    </h3>
-                  </div>
+                {item.created_at && (
+                  <time
+                    dateTime={item.created_at}
+                    className="mt-4 text-xs text-foreground-accent"
+                  >
+                    {new Date(item.created_at).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    })}
+                  </time>
                 )}
               </article>
             ))}
