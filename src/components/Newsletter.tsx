@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import type { Locale } from '@/i18n/config';
+import { getDictionary } from '@/i18n/get-dictionary';
 
 declare global {
     interface Window {
@@ -14,10 +16,15 @@ declare global {
     }
 }
 
-const Newsletter: React.FC = () => {
+interface NewsletterProps {
+    locale: Locale;
+}
+
+const Newsletter: React.FC<NewsletterProps> = ({ locale }) => {
     const [email, setEmail] = useState('');
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+    const t = getDictionary(locale);
 
     useEffect(() => {
         // Set up Turnstile callbacks for implicit rendering
@@ -110,17 +117,17 @@ const Newsletter: React.FC = () => {
                 <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-2">
                     <div className="max-w-xl lg:max-w-lg">
                         <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-                            Subscribe to our newsletter
+                            {t.newsletter.title}
                         </h2>
                         <p className="mt-4 text-lg leading-8 text-foreground-accent">
-                            Get the latest updates, tips, and insights delivered straight to your inbox. Stay connected with Booksolo and never miss important news.
+                            {t.newsletter.description}
                         </p>
                     </div>
                     <div className="w-full max-w-md">
                         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                             <div>
                                 <label htmlFor="email-address" className="sr-only">
-                                    Email address
+                                    {t.newsletter.emailPlaceholder}
                                 </label>
                                 <input
                                     id="email-address"
@@ -132,7 +139,7 @@ const Newsletter: React.FC = () => {
                                     onChange={(e) => setEmail(e.target.value)}
                                     disabled={loading}
                                     className="w-full rounded-md border-0 px-3.5 py-2 text-foreground shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 disabled:opacity-50 disabled:cursor-not-allowed"
-                                    placeholder="Enter your email"
+                                    placeholder={t.newsletter.emailPlaceholder}
                                 />
                             </div>
                             
@@ -151,7 +158,7 @@ const Newsletter: React.FC = () => {
                                 disabled={loading}
                                 className="flex-none rounded-md bg-primary px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                             >
-                                {loading ? 'Subscribing...' : 'Subscribe'}
+                                {loading ? (locale === 'pl' ? 'Zapisywanie...' : 'Subscribing...') : t.newsletter.subscribeButton}
                             </button>
 
                             {message && (

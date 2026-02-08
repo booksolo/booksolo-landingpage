@@ -7,10 +7,23 @@ import { Transition } from '@headlessui/react';
 import { HiOutlineXMark, HiBars3 } from 'react-icons/hi2';
 
 import Container from './Container';
-import { menuItems } from '@/data/menuItems';
+import LanguageSwitcher from './LanguageSwitcher';
+import type { Locale } from '@/i18n/config';
+import { getDictionary } from '@/i18n/get-dictionary';
 
-const Header: React.FC = () => {
+interface HeaderProps {
+    locale: Locale;
+}
+
+const Header: React.FC<HeaderProps> = ({ locale }) => {
     const [isOpen, setIsOpen] = useState(false);
+    const t = getDictionary(locale);
+    
+    const menuItems = [
+        { text: t.nav.features, url: '#features' },
+        { text: t.nav.gallery, url: '#gallery' },
+        { text: t.nav.aiChat, url: '#pricing' },
+    ];
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
@@ -19,9 +32,15 @@ const Header: React.FC = () => {
     return (
         <header className="bg-transparent fixed top-0 left-0 right-0 md:absolute z-50 mx-auto w-full">
             <Container className="!px-0">
-                <nav className="shadow-md md:shadow-none bg-white md:bg-transparent mx-auto flex justify-between items-center py-2 px-5 md:py-10">
+                {/* Language Switcher Row - Desktop Only */}
+                <div className="hidden md:flex justify-end py-2 px-5">
+                    <LanguageSwitcher currentLocale={locale} />
+                </div>
+                
+                {/* Main Navigation Row */}
+                <nav className="shadow-md md:shadow-none bg-white md:bg-transparent mx-auto flex justify-between items-center py-2 px-5 md:py-6">
                     {/* Logo */}
-                    <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+                    <Link href={`/${locale}`} className="flex items-center gap-2 hover:opacity-80 transition-opacity">
                         <Image 
                             src="/images/Logo.png" 
                             alt="BookSolo" 
@@ -33,20 +52,17 @@ const Header: React.FC = () => {
                     </Link>
 
                     {/* Desktop Menu */}
-                    <ul className="hidden md:flex space-x-6">
-                        {menuItems.map(item => (
-                            <li key={item.text}>
-                                <Link href={item.url} className="text-foreground hover:text-foreground-accent transition-colors">
-                                    {item.text}
-                                </Link>
-                            </li>
-                        ))}
-                        {/* <li>
-                            <Link href="#cta" className="text-black bg-primary hover:bg-primary-accent px-8 py-3 rounded-full transition-colors">
-                                Download
-                            </Link>
-                        </li> */}
-                    </ul>
+                    <div className="hidden md:flex items-center">
+                        <ul className="flex space-x-6">
+                            {menuItems.map(item => (
+                                <li key={item.text}>
+                                    <Link href={item.url} className="text-foreground hover:text-foreground-accent transition-colors">
+                                        {item.text}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
 
                     {/* Mobile Menu Button */}
                     <div className="md:hidden flex items-center">
@@ -79,7 +95,7 @@ const Header: React.FC = () => {
                 leaveTo="opacity-0 scale-95"
             >
                 <div id="mobile-menu" className="md:hidden bg-white shadow-lg">
-                    <ul className="flex flex-col space-y-4 pt-1 pb-6 px-6">
+                    <ul className="flex flex-col space-y-4 pt-1 pb-4 px-6">
                         {menuItems.map(item => (
                             <li key={item.text}>
                                 <Link href={item.url} className="text-foreground hover:text-primary block" onClick={toggleMenu}>
@@ -87,12 +103,10 @@ const Header: React.FC = () => {
                                 </Link>
                             </li>
                         ))}
-                        {/* <li>
-                            <Link href="#cta" className="text-black bg-primary hover:bg-primary-accent px-5 py-2 rounded-full block w-fit" onClick={toggleMenu}>
-                                Get Started
-                            </Link>
-                        </li> */}
                     </ul>
+                    <div className="px-6 pb-6 border-t border-gray-200 pt-4">
+                        <LanguageSwitcher currentLocale={locale} className="w-full" />
+                    </div>
                 </div>
             </Transition>
         </header>

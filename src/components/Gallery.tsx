@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import type { Locale } from '@/i18n/config';
+import { getDictionary } from '@/i18n/get-dictionary';
 
 type GalleryItem = {
   image: string;
@@ -9,10 +11,15 @@ type GalleryItem = {
   title?: string;
 };
 
-const Gallery: React.FC = () => {
+interface GalleryProps {
+  locale: Locale;
+}
+
+const Gallery: React.FC<GalleryProps> = ({ locale }) => {
   const [items, setItems] = useState<GalleryItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [manifestUnavailable, setManifestUnavailable] = useState(false);
+  const t = getDictionary(locale);
 
   useEffect(() => {
     const loadManifest = async () => {
@@ -53,18 +60,16 @@ const Gallery: React.FC = () => {
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            Inspiration gallery
+            {t.gallery.title}
           </h2>
           <p className="mt-4 text-lg leading-8 text-foreground-accent">
-            Sample posts that show what Booksolo creates – tailored to the
-            client&apos;s business, product, or solo journey and aligned with
-            their brand and logo colours when needed.
+            {t.gallery.description}
           </p>
         </div>
 
         {loading && (
           <p className="mt-10 text-center text-base text-foreground-accent">
-            Gallery is loading…
+            {t.gallery.loading}
           </p>
         )}
 
@@ -98,11 +103,14 @@ const Gallery: React.FC = () => {
                     dateTime={item.created_at}
                     className="mt-4 text-xs text-foreground-accent"
                   >
-                    {new Date(item.created_at).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric",
-                    })}
+                    {new Date(item.created_at).toLocaleDateString(
+                      locale === 'pl' ? 'pl-PL' : 'en-US',
+                      {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                      }
+                    )}
                   </time>
                 )}
               </article>

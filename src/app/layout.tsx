@@ -1,67 +1,14 @@
-import type { Metadata } from "next";
-import Script from "next/script";
-import { Source_Sans_3, Manrope } from "next/font/google";
-
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import CookieConsentBanner from "@/components/CookieConsentBanner";
-import { siteDetails } from '@/data/siteDetails';
-
-import "./globals.css";
-
-const manrope = Manrope({ subsets: ['latin'] });
-const sourceSans = Source_Sans_3({ subsets: ['latin'] });
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: siteDetails.metadata.title,
-  description: siteDetails.metadata.description,
-  openGraph: {
-    title: siteDetails.metadata.title,
-    description: siteDetails.metadata.description,
-    url: siteDetails.siteUrl,
-    type: 'website',
-    images: [
-      {
-        url: '/images/og-image.jpg',
-        width: 1200,
-        height: 675,
-        alt: siteDetails.siteName,
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: siteDetails.metadata.title,
-    description: siteDetails.metadata.description,
-    images: ['/images/twitter-image.jpg'],
-  },
+  title: 'BookSolo',
+  description: 'Social media content for solo service businesses',
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
-  return (
-    <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://challenges.cloudflare.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://api.booksolo.eu" crossOrigin="anonymous" />
-      </head>
-      <body
-        className={`${manrope.className} ${sourceSans.className} antialiased`}
-      >
-        <Script
-          src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-          strategy="lazyOnload"
-        />
-        <Header />
-        <main>
-          {children}
-        </main>
-        <Footer />
-        <CookieConsentBanner />
-      </body>
-    </html>
-  );
+}) {
+  return children;
 }

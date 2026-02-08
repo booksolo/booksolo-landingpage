@@ -2,6 +2,14 @@
 
 Next.js and Tailwind CSS landing page for BookSolo - AI chatbots for solo entrepreneurs.
 
+## 🌍 Languages
+
+This landing page supports **English** and **Polish**:
+- English: `/en/`
+- Polish: `/pl/`
+
+See **[BILINGUAL_SUMMARY.md](./BILINGUAL_SUMMARY.md)** for implementation details and **[I18N.md](./I18N.md)** for developer documentation.
+
 ## Prerequisites
 
 - Node.js 18 or later

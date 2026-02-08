@@ -2,16 +2,33 @@ import Link from 'next/link';
 import Image from 'next/image';
 import React from 'react';
 
-import { siteDetails } from '@/data/siteDetails';
-import { footerDetails } from '@/data/footer';
+import type { Locale } from '@/i18n/config';
+import { getDictionary } from '@/i18n/get-dictionary';
 import { getPlatformIconByName } from '@/utils';
 
-const Footer: React.FC = () => {
+interface FooterProps {
+    locale: Locale;
+}
+
+const Footer: React.FC<FooterProps> = ({ locale }) => {
+    const t = getDictionary(locale);
+    
+    const quickLinks = [
+        { text: t.nav.features, url: '#features' },
+        { text: t.nav.gallery, url: '#gallery' },
+        { text: t.nav.aiChat, url: '#pricing' },
+    ];
+    
+    const socials = {
+        facebook: 'https://www.facebook.com/profile.php?id=61586280141672',
+        instagram: 'https://www.instagram.com/booksolo.ai/',
+    };
+
     return (
         <footer className="bg-white text-foreground py-10">
             <div className="max-w-7xl w-full mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10">
                 <div>
-                    <Link href="/" className="flex items-center">
+                    <Link href={`/${locale}`} className="flex items-center">
                         <Image 
                             src="/images/Logo.png" 
                             alt="BookSolo" 
@@ -21,13 +38,13 @@ const Footer: React.FC = () => {
                         />
                     </Link>
                     <p className="mt-3.5 text-foreground-accent">
-                        {footerDetails.subheading}
+                        {t.footer.description}
                     </p>
                 </div>
                 <div>
-                    <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
+                    <h4 className="text-lg font-semibold mb-4">{t.footer.quickLinks}</h4>
                     <ul className="text-foreground-accent">
-                        {footerDetails.quickLinks.map(link => (
+                        {quickLinks.map(link => (
                             <li key={link.text} className="mb-2">
                                 <Link href={link.url} className="hover:text-foreground">{link.text}</Link>
                             </li>
@@ -35,33 +52,27 @@ const Footer: React.FC = () => {
                     </ul>
                 </div>
                 <div>
-                    <h4 className="text-lg font-semibold mb-4">Contact Us</h4>
+                    <h4 className="text-lg font-semibold mb-4">{t.footer.contactUs}</h4>
 
-                    {footerDetails.email && <a href={`mailto:${footerDetails.email}`}  className="block text-foreground-accent hover:text-foreground">Email: {footerDetails.email}</a>}
+                    <a href="mailto:hello@booksolo.eu" className="block text-foreground-accent hover:text-foreground">
+                        {t.footer.email}: hello@booksolo.eu
+                    </a>
 
-                    {footerDetails.telephone && <a href={`tel:${footerDetails.telephone}`} className="block text-foreground-accent hover:text-foreground">Phone: {footerDetails.telephone}</a>}
-
-                    {footerDetails.socials && (
-                        <div className="mt-5 flex items-center gap-5 flex-wrap">
-                            {Object.keys(footerDetails.socials).map(platformName => {
-                                if (platformName && footerDetails.socials[platformName]) {
-                                    return (
-                                        <Link
-                                            href={footerDetails.socials[platformName]}
-                                            key={platformName}
-                                            aria-label={platformName}
-                                        >
-                                            {getPlatformIconByName(platformName)}
-                                        </Link>
-                                    )
-                                }
-                            })}
-                        </div>
-                    )}
+                    <div className="mt-5 flex items-center gap-5 flex-wrap">
+                        {Object.keys(socials).map(platformName => (
+                            <Link
+                                href={socials[platformName as keyof typeof socials]}
+                                key={platformName}
+                                aria-label={platformName}
+                            >
+                                {getPlatformIconByName(platformName)}
+                            </Link>
+                        ))}
+                    </div>
                 </div>
             </div>
             <div className="mt-8 md:text-center text-foreground-accent px-6">
-                <p>Copyright &copy; {new Date().getFullYear()} {siteDetails.siteName}. All rights reserved.</p>
+                <p>{t.footer.copyright}</p>
             </div>
         </footer>
     );

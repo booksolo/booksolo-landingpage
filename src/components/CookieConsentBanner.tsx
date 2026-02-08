@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import type { Locale } from '@/i18n/config';
+import { getDictionary } from '@/i18n/get-dictionary';
 
 declare global {
   interface Window {
@@ -15,8 +17,13 @@ const CONSENT_STORAGE_KEY = 'cookie-consent';
 const GTM_ID = 'GTM-PMFF72WN';
 const GA_ID = 'G-Q6XR0F8VLL';
 
-const CookieConsentBanner: React.FC = () => {
+interface CookieConsentBannerProps {
+  locale: Locale;
+}
+
+const CookieConsentBanner: React.FC<CookieConsentBannerProps> = ({ locale }) => {
   const [consent, setConsent] = useState<ConsentState>('unset');
+  const t = getDictionary(locale);
 
   useEffect(() => {
     if (typeof window === 'undefined') {
@@ -90,12 +97,14 @@ const CookieConsentBanner: React.FC = () => {
         <div className="fixed bottom-4 left-4 right-4 z-50 mx-auto max-w-4xl rounded-2xl border border-gray-200 bg-white p-4 shadow-lg md:bottom-6 md:left-6 md:right-6">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div className="text-sm text-foreground">
-              <p className="font-semibold">We use cookies</p>
+              <p className="font-semibold">{locale === 'pl' ? 'Używamy ciasteczek' : 'We use cookies'}</p>
               <p className="text-foreground-accent">
-                We use analytics cookies to understand traffic and improve BookSolo.
-                You can accept or reject analytics. Read more in our{' '}
-                <Link href="/polityka-prywatnosci" className="text-primary hover:underline">
-                  Privacy Policy
+                {t.cookies.message}{' '}
+                <Link 
+                  href={`/${locale}/polityka-prywatnosci`} 
+                  className="text-primary hover:underline"
+                >
+                  {t.footer.privacyPolicy}
                 </Link>
                 .
               </p>
@@ -105,17 +114,17 @@ const CookieConsentBanner: React.FC = () => {
                 type="button"
                 onClick={handleReject}
                 className="rounded-full border border-foreground px-5 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-foreground hover:text-white"
-                aria-label="Reject analytics cookies"
+                aria-label={locale === 'pl' ? 'Odrzuć ciasteczka analityczne' : 'Reject analytics cookies'}
               >
-                Reject
+                {t.cookies.reject}
               </button>
               <button
                 type="button"
                 onClick={handleAccept}
                 className="rounded-full bg-primary px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary/90"
-                aria-label="Accept analytics cookies"
+                aria-label={locale === 'pl' ? 'Zaakceptuj ciasteczka analityczne' : 'Accept analytics cookies'}
               >
-                Accept
+                {t.cookies.accept}
               </button>
             </div>
           </div>
