@@ -95,6 +95,7 @@ upload: check-bucket ## Upload build artifacts to S3 (requires build first)
 				--content-type "application/javascript"; \
 		done; \
 		aws s3 sync out/ s3://$(BUCKET_NAME)/ --profile $(AWS_PROFILE) --delete \
+			--exclude "gallery/*" \
 			--exclude "*.js" \
 			--exclude "_next/**/*.js"; \
 		echo "$(BLUE)Uploading images (long cache)...$(NC)"; \
@@ -107,6 +108,7 @@ upload: check-bucket ## Upload build artifacts to S3 (requires build first)
 			--include "*.webp" \
 			--include "*.svg" \
 			--include "*.ico" \
+			--exclude "gallery/*" \
 			--cache-control "public, max-age=31536000, immutable"; \
 		echo "$(BLUE)Uploading fonts (long cache)...$(NC)"; \
 		aws s3 sync out/ s3://$(BUCKET_NAME)/ --profile $(AWS_PROFILE) --delete \
@@ -118,6 +120,7 @@ upload: check-bucket ## Upload build artifacts to S3 (requires build first)
 			--cache-control "public, max-age=31536000, immutable"; \
 		echo "$(BLUE)Uploading other files...$(NC)"; \
 		aws s3 sync out/ s3://$(BUCKET_NAME)/ --profile $(AWS_PROFILE) --delete \
+			--exclude "gallery/*" \
 			--exclude "*.html" \
 			--exclude "*.css" \
 			--exclude "*.js" \
