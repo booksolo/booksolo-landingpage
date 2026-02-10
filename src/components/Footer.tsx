@@ -28,7 +28,7 @@ const Footer: React.FC<FooterProps> = ({ locale }) => {
         <footer className="bg-white text-foreground py-10">
             <div className="max-w-7xl w-full mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10">
                 <div>
-                    <Link href={`/${locale}`} className="flex items-center">
+                    <Link href={`/${locale}/`} className="flex items-center">
                         <Image 
                             src="/images/Logo.png" 
                             alt="BookSolo" 

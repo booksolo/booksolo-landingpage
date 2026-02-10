@@ -20,8 +20,9 @@ export default function LanguageSwitcher({ currentLocale, className = '' }: Lang
 
   const getNewPath = (newLocale: Locale) => {
     // Before hydration, use simple locale-only path to avoid mismatch
+    // Must include trailing slash to match server-rendered HTML (trailingSlash: true)
     if (!mounted) {
-      return `/${newLocale}`;
+      return `/${newLocale}/`;
     }
 
     const segments = pathname.split('/').filter(Boolean);
@@ -32,7 +33,8 @@ export default function LanguageSwitcher({ currentLocale, className = '' }: Lang
       segments.unshift(newLocale);
     }
 
-    return `/${segments.join('/')}`;
+    // Add trailing slash to match Next.js trailingSlash: true config
+    return `/${segments.join('/')}/`;
   };
 
   return (

@@ -40,7 +40,7 @@ const Header: React.FC<HeaderProps> = ({ locale }) => {
                 {/* Main Navigation Row */}
                 <nav className="shadow-md md:shadow-none bg-white md:bg-transparent mx-auto flex justify-between items-center py-2 px-5 md:py-6">
                     {/* Logo */}
-                    <Link href={`/${locale}`} className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+                    <Link href={`/${locale}/`} className="flex items-center gap-2 hover:opacity-80 transition-opacity">
                         <Image 
                             src="/images/Logo.png" 
                             alt="BookSolo" 
