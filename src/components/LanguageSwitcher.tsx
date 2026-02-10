@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { locales, localeNames, type Locale } from '@/i18n/config';
@@ -11,20 +12,26 @@ interface LanguageSwitcherProps {
 
 export default function LanguageSwitcher({ currentLocale, className = '' }: LanguageSwitcherProps) {
   const pathname = usePathname();
+  const [mounted, setMounted] = useState(false);
 
-  // Remove current locale from pathname to get the base path
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const getNewPath = (newLocale: Locale) => {
-    // Remove leading slash and split
+    // Before hydration, use simple locale-only path to avoid mismatch
+    if (!mounted) {
+      return `/${newLocale}`;
+    }
+
     const segments = pathname.split('/').filter(Boolean);
-    
-    // If first segment is a locale, replace it
+
     if (segments.length > 0 && locales.includes(segments[0] as Locale)) {
       segments[0] = newLocale;
     } else {
-      // Add locale at the beginning
       segments.unshift(newLocale);
     }
-    
+
     return `/${segments.join('/')}`;
   };
 
