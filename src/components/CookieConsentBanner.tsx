@@ -8,14 +8,13 @@ import { getDictionary } from '@/i18n/get-dictionary';
 declare global {
   interface Window {
     dataLayer?: unknown[];
+    gtag?: (...args: unknown[]) => void;
   }
 }
 
 type ConsentState = 'accepted' | 'rejected' | 'unset';
 
 const CONSENT_STORAGE_KEY = 'cookie-consent';
-const GTM_ID = 'GTM-PMFF72WN';
-const GA_ID = 'G-Q6XR0F8VLL';
 
 interface CookieConsentBannerProps {
   locale: Locale;
@@ -36,38 +35,14 @@ const CookieConsentBanner: React.FC<CookieConsentBannerProps> = ({ locale }) => 
   }, []);
 
   useEffect(() => {
-    if (consent !== 'accepted' || typeof window === 'undefined') {
+    if (typeof window === 'undefined' || consent === 'unset') {
       return;
     }
-
-    if (document.getElementById('gtm-script')) {
-      return;
-    }
-
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
-
-    const gtmScript = document.createElement('script');
-    gtmScript.id = 'gtm-script';
-    gtmScript.async = true;
-    gtmScript.src = `https://www.googletagmanager.com/gtm.js?id=${GTM_ID}`;
-    document.head.appendChild(gtmScript);
-
-    const gaScript = document.createElement('script');
-    gaScript.id = 'ga-script';
-    gaScript.async = true;
-    gaScript.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
-    document.head.appendChild(gaScript);
-
-    const gaInit = document.createElement('script');
-    gaInit.id = 'ga-init';
-    gaInit.text = `
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', '${GA_ID}');
-    `;
-    document.head.appendChild(gaInit);
+    // Update GA4 consent mode — analytics starts collecting only when accepted
+    window.gtag?.('consent', 'update', {
+      analytics_storage: consent === 'accepted' ? 'granted' : 'denied',
+      ad_storage: 'denied',
+    });
   }, [consent]);
 
   const handleAccept = () => {
@@ -82,17 +57,6 @@ const CookieConsentBanner: React.FC<CookieConsentBannerProps> = ({ locale }) => 
 
   return (
     <>
-      {consent === 'accepted' && (
-        <noscript>
-          <iframe
-            src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
-            height="0"
-            width="0"
-            style={{ display: 'none', visibility: 'hidden' }}
-          />
-        </noscript>
-      )}
-
       {consent === 'unset' && (
         <div className="fixed bottom-4 left-4 right-4 z-50 mx-auto max-w-4xl rounded-2xl border border-gray-200 bg-white p-4 shadow-lg md:bottom-6 md:left-6 md:right-6">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
