@@ -30,7 +30,7 @@ const Footer: React.FC<FooterProps> = ({ locale }) => {
                 <div>
                     <Link href={`/${locale}/`} className="flex items-center">
                         <Image 
-                            src="/images/Logo.png" 
+                            src="/images/logo.png" 
                             alt="BookSolo" 
                             width={577} 
                             height={108}
@@ -54,11 +54,7 @@ const Footer: React.FC<FooterProps> = ({ locale }) => {
                 <div>
                     <h4 className="text-lg font-semibold mb-4">{t.footer.contactUs}</h4>
 
-                    <a href="mailto:hello@booksolo.eu" className="block text-foreground-accent hover:text-foreground">
-                        {t.footer.email}: hello@booksolo.eu
-                    </a>
-
-                    <div className="mt-5 flex items-center gap-5 flex-wrap">
+                    <div className="flex items-center gap-5 flex-wrap">
                         {Object.keys(socials).map(platformName => (
                             <Link
                                 href={socials[platformName as keyof typeof socials]}

@@ -41,8 +41,6 @@ export default function LocaleLayout({ children, params }: LocaleLayoutProps) {
   return (
     <html lang={params.locale}>
       <head>
-        <link rel="preconnect" href="https://challenges.cloudflare.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://api.booksolo.eu" crossOrigin="anonymous" />
         {/* Set consent defaults before any tag fires — analytics denied until user accepts */}
         <Script id="gtag-consent-init" strategy="beforeInteractive">{`
           window.dataLayer = window.dataLayer || [];
@@ -79,10 +77,6 @@ export default function LocaleLayout({ children, params }: LocaleLayoutProps) {
             style={{ display: 'none', visibility: 'hidden' }}
           />
         </noscript>
-        <Script
-          src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-          strategy="lazyOnload"
-        />
         <Header locale={params.locale} />
         <main>{children}</main>
         <Footer locale={params.locale} />

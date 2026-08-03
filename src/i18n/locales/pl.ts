@@ -12,8 +12,6 @@ export const pl: Translation = {
     features: 'Funkcje',
     gallery: 'Galeria',
     aiChat: 'Czat AI',
-    pricing: 'Cennik',
-    testimonials: 'Opinie',
   },
 
   // Hero section
@@ -98,20 +96,11 @@ export const pl: Translation = {
     },
   },
 
-  // Newsletter section
-  newsletter: {
-    title: 'Zapisz się do newslettera',
-    description: 'Otrzymuj najnowsze aktualizacje, porady i informacje prosto do skrzynki. Pozostań w kontakcie z Booksolo i nie przegap ważnych wiadomości.',
-    emailPlaceholder: 'Adres email',
-    subscribeButton: 'Zapisz się',
-  },
-
   // Footer
   footer: {
     description: 'Narzędzie do treści social media dla jednoosobowych firm usługowych. Twórz gotowe treści na Facebook i Instagram w minuty, zachowaj regularność i przyciągnij więcej lokalnych klientów.',
     quickLinks: 'Szybkie Linki',
     contactUs: 'Kontakt',
-    email: 'Email',
     copyright: 'Copyright © 2026 BookSolo. Wszelkie prawa zastrzeżone.',
     privacyPolicy: 'Polityka Prywatności',
     termsOfService: 'Regulamin',

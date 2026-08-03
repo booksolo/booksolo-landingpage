@@ -7,7 +7,6 @@ import Hero from '@/components/Hero';
 import Benefits from '@/components/Benefits/Benefits';
 import Container from '@/components/Container';
 import Gallery from '@/components/Gallery';
-import Newsletter from '@/components/Newsletter';
 import Section from '@/components/Section';
 import Pricing from '@/components/Pricing/Pricing';
 
@@ -68,7 +67,6 @@ export default function LocalePage({ params }: PageProps) {
           <Pricing locale={params.locale} />
         </Section>
       </Container>
-      <Newsletter locale={params.locale} />
     </>
   );
 }

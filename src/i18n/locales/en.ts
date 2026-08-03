@@ -10,8 +10,6 @@ export const en = {
     features: 'Features',
     gallery: 'Gallery',
     aiChat: 'AI chat',
-    pricing: 'Pricing',
-    testimonials: 'Testimonials',
   },
 
   // Hero section
@@ -96,20 +94,11 @@ export const en = {
     },
   },
 
-  // Newsletter section
-  newsletter: {
-    title: 'Subscribe to our newsletter',
-    description: 'Get the latest updates, tips, and insights delivered straight to your inbox. Stay connected with Booksolo and never miss important news.',
-    emailPlaceholder: 'Email address',
-    subscribeButton: 'Subscribe',
-  },
-
   // Footer
   footer: {
     description: 'Social media content tool for solo service businesses. Create ready-to-post Facebook and Instagram content in minutes, stay consistent, and attract more local clients.',
     quickLinks: 'Quick Links',
     contactUs: 'Contact Us',
-    email: 'Email',
     copyright: 'Copyright © 2026 BookSolo. All rights reserved.',
     privacyPolicy: 'Privacy Policy',
     termsOfService: 'Terms of Service',
@@ -133,8 +122,6 @@ export type Translation = {
     features: string;
     gallery: string;
     aiChat: string;
-    pricing: string;
-    testimonials: string;
   };
   hero: {
     heading: string;
@@ -171,17 +158,10 @@ export type Translation = {
       scale: string;
     };
   };
-  newsletter: {
-    title: string;
-    description: string;
-    emailPlaceholder: string;
-    subscribeButton: string;
-  };
   footer: {
     description: string;
     quickLinks: string;
     contactUs: string;
-    email: string;
     copyright: string;
     privacyPolicy: string;
     termsOfService: string;

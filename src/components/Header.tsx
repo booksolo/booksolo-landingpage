@@ -42,7 +42,7 @@ const Header: React.FC<HeaderProps> = ({ locale }) => {
                     {/* Logo */}
                     <Link href={`/${locale}/`} className="flex items-center gap-2 hover:opacity-80 transition-opacity">
                         <Image 
-                            src="/images/Logo.png" 
+                            src="/images/logo.png" 
                             alt="BookSolo" 
                             width={577} 
                             height={108}
